@@ -31,6 +31,8 @@ class AppenlightMiddleware(MiddlewareMixin):
     def process_request(self, request):
         request._errormator_create_report = False
         request.__traceback__ = None
+        if getattr(request, 'environ', None) is None:
+            request.environ={}
         environ = request.environ
         environ['appenlight.request_id'] = str(uuid.uuid4())
         # inject client instance reference to environ
